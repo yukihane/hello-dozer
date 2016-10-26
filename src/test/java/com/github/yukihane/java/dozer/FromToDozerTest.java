@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.github.yukihane.java.dozer.from.FromChild;
+import com.github.yukihane.java.dozer.from.FromInterElement;
 import com.github.yukihane.java.dozer.from.FromParent;
 import com.github.yukihane.java.dozer.to.ToChild;
 import com.github.yukihane.java.dozer.to.ToParent;
@@ -47,5 +48,13 @@ public class FromToDozerTest {
 
         final ToParent res2 = mapper.map(fromParent, ToParent.class);
         assertTrue("再確認. 同一インスタンスでも異なるタイミングなら別インスタンスに変換", res != res2);
+
+        final FromInterElement element = new FromInterElement(s1);
+        fromParent.setElement(element);
+        final ToParent res3 = mapper.map(fromParent, ToParent.class);
+
+        assertTrue("別のインスタンスが保持しているものでも変換元が同一インスタンスなら変換先も同一",
+            res3.getElement().getChild() == res3.getChildren().get(0));
+
     }
 }
